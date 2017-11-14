@@ -1,0 +1,23 @@
+---
+title: "Residuals vs Fitted"
+author: "Anh Khoa Vo"
+date: "November 12, 2017"
+output: html_document
+---
+
+
+![*Fig. 1* Residuals vs Fitted Plot of Every Country](hw7.png)
+```{r load-data}
+data <- read.csv("hw7.csv")
+```
+
+Based on the graph, it indicated non-linearity in the model. This suggests changes in the structural form of the model. 
+
+Below is the table of residuals vs fitted values of every country:
+
+```{r analyze-data}
+library(knitr)
+k <- kable(data, caption = "Residuals vs Fitted Table")
+k
+```
+
