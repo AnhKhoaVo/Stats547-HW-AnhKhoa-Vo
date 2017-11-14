@@ -1,0 +1,193 @@
+---
+title: "Homework_6"
+author: "Anh Khoa Vo"
+date: "November 9, 2017"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Question 1: StringR in data science 
+#14.2.5
+1.	The difference between paste() and paste0() lies on the "sep" argument of the function. sep is used to separate every term in the vector. By default, paste() will separate each elemenents in the string with a space, whereas paste0() link string without spaces. For example:
+
+```{r}
+My_name <- c("A", "n", "h")
+My_name_changed <- paste(My_name)
+My_name_changed
+My_name2 <- paste0(My_name)
+My_name2
+```
+
+Paste0() is equivalent to str_c(), and paste() is equivalent to str_c(, sep = "")
+
+2. The sep argument in str_c() will insert strings between input vectors, but the collapse argument in str_c() will concatenate input vectors into a single string. For example,
+
+
+```{r}
+library(stringr)
+My_Full_Name <- c("A", "n", "h", "K", "h", "o", "a", "V", "o")
+str_c(My_Full_Name, sep = "")
+str_c(My_Full_Name, collapse = "")
+```
+
+3. 
+```{r}
+df <- c("Is R really fun")
+str_length(df)
+str_sub(df, 7, 7)
+```
+
+
+
+4.	str_wrap() is used to edit the existing whitespace to wrap a paragraphs in a way that each line has similar lengths to each other. You might use this function in graph, such as ggplot that has a long varibles' names in the Axis.
+
+5.	str_trim() is used to remove any leading and trailing whitespace. The opposite of str_trim() is str_pad(), which adds extra whitespace on the left, right, or both to a string.
+
+
+6. Write function: 
+```{r}
+library(stringr)
+Vector_string <- function(x) {
+  l <- length(x)
+  if (l == 0) return("")
+  if (l == 1) return(x)
+  if (l == 2) return(str_c(x, collapse = " and "))
+  if (l >= 3){ 
+    n <- x[l]
+    k <- c("and", n)
+    x[l] <- str_c(k, collapse = " ")
+    return(str_c(x, collapse = ", "))
+  }
+}
+o <- c("a", "b", "c")
+h <- Vector_string(o)
+h
+```
+#14.3.1.1
+
+1. These strings don't match a \ because "\" is used to escape behaviour, whereas "\\" is to create regular expression. In order to create said regular expression, we need to use a string, which adds another "\". In other words, to create "\" we need 4 "\\\\".
+
+
+2. 
+```{r}
+library(stringr)
+l = "\"'\\"
+writeLines(l)
+g <- str_view(l, "\\\"'\\\\")
+g
+```
+ 
+#14.3.2.1 
+
+1.
+```{r}
+k = "IsRreally$^$FUNNNNNNNMAYBE"
+h <- str_view(k, "\\$\\^\\$")
+h
+```
+
+#14.3.3.1
+4.
+```{r}
+wordss <- c("color", "colour")
+j <- str_view(wordss, "ou")
+j
+```
+
+#14.3.4.1
+1.
+{1}, {1,}, {0,}
+ 
+#14.3.5.1
+1. 
+
+```{r}
+wordsss <- c("ana", "anh", "decide", "table", "degree", "eleven", "one", "two")
+str_view(wordsss, "^(.).*\\1$")
+
+str_view(wordsss, "(..).*\\1")
+
+str_view(wordsss, "(.).*\\1.*\\1")
+```
+
+#14.4.2
+1. 
+```{r}
+str_view(words, "^x|x$", match = T)
+start_x = str_detect(words, "^x")
+end_x = str_detect(words, "x$")
+words[start_x | end_x]
+
+str_view(words, "^[aeuio].*[^aeuio]$", match = T)
+start_vowel = str_detect(words, "^[aeuio]")
+end_consonant = str_detect(words, "[^aeuio]$")
+words[start_vowel & end_consonant]
+
+```
+
+
+#14.4.4.1
+2. 
+```{r}
+contraction = str_subset(sentences, "[^ ]+\\'[^ .]+")
+str_extract(contraction, "[^ ]+\\'[^ .]+")
+```
+
+#14.4.5.1
+1.
+```{r}
+K = "AnhKhoaVo//REALLY//enjoys/////R///right////now//cant/wait/to/die"
+str_replace_all(K, "/", "\\\\")
+```
+#14.4.6.1
+1.
+```{r}
+froots = "apples, pears, and bananas"
+str_split(froots, ", and |, ")
+```
+#14.5.1
+```{r}
+dying = c("I\\", "am\\", "seriously\\", "dying\\", "right\\", "now\\", "Icantdeal\\")
+str_view(dying, regex("\\\\"))
+str_view(dying, fixed("\\"))
+```
+#14.7
+1. Count the number of words.  stri_count_words
+2. Find duplicated strings.    stri_duplicated
+3. Generate random text.       stri_rand_strings
+
+#Question 2: Write own function
+
+```{r}
+library("gapminder")
+fit.model <- function(dat) {
+  base_model <- lm(lifeExp ~ year + I(year^2) + pop, dat)
+  full_model <- lm(lifeExp ~ year + I(year^2) + pop + gdpPercap + factor(continent), dat)
+  x <- anova(base_model, full_model)
+  return(list(x,base_model, full_model))
+}
+
+f <- fit.model(gapminder)
+f
+
+library("dplyr")
+library("tidyverse")
+
+resid.model <- function(fit) {
+  z <- qqnorm(resid(fit[[2]]))
+  t <- qqnorm(resid(fit[[3]]))
+  df1 <- data.frame(x = z$x, y = z$y, lab = "Residuals Base")
+  df2 <- data.frame(x = t$x, y = t$y, lab = "Residuals Full")
+  u <- dplyr::union(df1, df2)
+  i <- arrange(u, lab)
+  return(i)
+}
+
+g <- resid.model(f)
+g
+```
