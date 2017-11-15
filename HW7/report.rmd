@@ -1,19 +1,19 @@
 ---
-title: "Residuals vs Fitted"
+title: "Residuals vs Fitted of Life Expectancy"
 author: "Anh Khoa Vo"
 date: "November 12, 2017"
 output: html_document
 ---
 
 
-![*Fig. 1* Residuals vs Fitted Plot of Every Country](hw7.png)
+![*Fig. 1* Residuals vs Fitted Plot of Every Country Based on Life Exp](hw7.png)
 ```{r load-data}
 data <- read.csv("hw7.csv")
 ```
 
 Based on the graph, it indicated non-linearity in the model. This suggests changes in the structural form of the model. 
 
-Below is the table of residuals vs fitted values of every country:
+Below is the table of residuals vs fitted values of Life Expectancy across countries:
 
 ```{r analyze-data}
 library(knitr)
