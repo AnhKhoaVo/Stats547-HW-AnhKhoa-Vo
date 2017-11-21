@@ -19,8 +19,11 @@ server <- function(input, output){
 	
 	output$Hist_AlcCont <- renderPlot({
 		Filtered_bcl() %>%
-		ggplot() + aes(x = Alcohol_Content) +
-		geom_histogram()
+		ggplot() + aes(x = Alcohol_Content, y = Price) +
+		geom_point(size = 3) + 
+		theme(axis.text=element_text(size=12),
+					axis.title=element_text(size=14,face="bold"))+
+		ggtitle("Graph of Alcohol content and Price")
 	})
 
 	output$table_head <- renderTable({
@@ -44,8 +47,11 @@ server <- function(input, output){
 #Adding a graph for sweetness of wine
  output$Sweet <- renderPlot({
  	Sweetness_bcl() %>%
- 		ggplot() + aes(x = Alcohol_Content) +
- 		geom_histogram()
+ 		ggplot() + aes(x = Alcohol_Content, y = Price) +
+ 		geom_point(size = 3) + 
+ 		theme(axis.text=element_text(size=12),
+ 					axis.title=element_text(size=14,face="bold")) + 
+ 		ggtitle("Graph of Alcohol content and price based on Sweetness of wine")
  })
  
  }

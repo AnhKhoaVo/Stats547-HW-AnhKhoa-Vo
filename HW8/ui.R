@@ -19,20 +19,18 @@ ui <- fluidPage(theme = shinytheme("darkly"),
 							 						 selected = "SPIRITS"), 
 				
 							 
-							 downloadButton("data.csv", "Download Our Dataset")
-	
-	            
 							 
+							 downloadButton("data.csv", "Download Our Dataset")
 	),
-	
+
 #Create new Tab
 	mainPanel(
 		tabsetPanel(
-			tabPanel("Histogram of Alcohol Content", plotOutput("Hist_AlcCont")),
+			tabPanel("Plots of Alcohol Content and Price", plotOutput("Hist_AlcCont")),
 			tabPanel("List of Alcohol", tableOutput("table_head")), 
 			tabPanel("Sweetness of Wine", conditionalPanel(condition = "input.typeIn == 'WINE'", 
-									 					sliderInput("sweetIn","Levels of Sweetness",
-									 					min = 0, max = 10, value = 5)),
+																										 sliderInput("sweetIn","Levels of Sweetness",
+																										 						min = 0, max = 10, value = 5)),
 							 plotOutput("Sweet"), 
 							 tableOutput("sweet_table_head"))
 		)
