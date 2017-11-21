@@ -9,6 +9,8 @@ server <- function(input, output){
 						 Type == input$typeIn)
 	})
 	
+
+	
 #Adding Sweetness for wine	
 	Sweetness_bcl <- reactive({
 		Filtered_bcl() %>%
@@ -27,12 +29,13 @@ server <- function(input, output){
 	})
 
 #Adding a download bar
-  output$downloadData <- downloadHandler(filename = bcl_data, 
-  																			 content = function(con) {
-  																			 file.copy("bcl-data.csv", con)
-  																			 }
+  output$data.csv <- downloadHandler(filename = function(){
+  															paste("data", "csv", sep=".")},
+  															content = (write.csv(bcl_data, file = "data.csv"))
+  
   )
   
+ 
  output$sweet_table_head <- renderTable({
  	Sweetness_bcl() %>%
  		head()

@@ -5,7 +5,6 @@ library(shinythemes)
 
 # New theme and Download bar
 ui <- fluidPage(theme = shinytheme("darkly"),
-								downloadLink("downloadData", "Download"),
 								
 # Application title
 	titlePanel("Liquor Webpage"),
@@ -14,9 +13,13 @@ ui <- fluidPage(theme = shinytheme("darkly"),
 	sidebarPanel("List of Prices and Boozes", 
 							 sliderInput("priceIn", "Price of booze",
 							 					 min = 0, max = 300, value = c(10,20), pre = "CAD"),
+							 
 							 radioButtons("typeIn", "What kind of booze?",
 							 						 choices = c("BEER", "SPIRITS", "WINE"), 
-							 						 selected = "SPIRITS")
+							 						 selected = "SPIRITS"), 
+				
+							 
+							 downloadButton("data.csv", "Download Our Dataset")
 	
 	            
 							 
