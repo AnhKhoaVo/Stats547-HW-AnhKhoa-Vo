@@ -33,7 +33,7 @@ server <- function(input, output){
   																			 }
   )
   
- output$table_head <- renderTable({
+ output$sweet_table_head <- renderTable({
  	Sweetness_bcl() %>%
  		head()
  })
