@@ -1,0 +1,12 @@
+name: Sample_Shiny
+title: Sample_Shiny
+username:
+account: anhkhoavo
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 236340
+bundleId: 1079440
+url: https://anhkhoavo.shinyapps.io/Sample_Shiny/
+when: 1510857733.28161
+asMultiple: FALSE
+asStatic: FALSE
