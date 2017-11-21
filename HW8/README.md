@@ -1,9 +1,3 @@
----
-title: "README.md"
-author: "Anh Khoa Vo"
-date: "November 20, 2017"
-output: html_document
----
 
 Welcome to my App: 
 
