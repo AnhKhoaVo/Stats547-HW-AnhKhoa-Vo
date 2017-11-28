@@ -1,0 +1,5 @@
+title: "Homework_6"
+author: "Anh Khoa Vo"
+date: "November 9, 2017"
+output: rmarkdown::github_document
+always_allow_html: yes

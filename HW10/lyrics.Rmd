@@ -1,0 +1,84 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(purrr)
+library(glue)
+library(stringr)
+```
+
+```{r}
+library(rvest)
+library(xml2)
+```
+
+```{r}
+my_url <- "https://www.musixmatch.com/artist/Lorde#"
+
+page_title <- read_html(my_url)
+```
+
+what's in `page_title` now? 
+
+```{r}
+page_title %>% View()
+```
+
+rvest comes into play 
+
+```{r}
+page_title %>% 
+	html_nodes(css = ".title") %>% 
+	html_text()
+
+
+```{r}
+SLS_lyrics <- data_frame(Band = "Lorde", 
+												 Title = page_title %>% 
+												 	html_nodes(css = ".title") %>%
+												 	html_text(), 
+												 Link = 
+glue('https://musixmatch.com/lyrics/{Band}/{Title}#') %>%
+	                        str_replace_all(" ","-"))
+SLS_lyrics$Link[1]
+```
+
+
+```{r}
+SLS_lyrics %<>%
+	mutate(Lyrics = map_chr(Link, read_html))
+```
+
+what do we have now? 
+
+```{r}
+SLS_lyrics %>% View()
+```
+
+```{r}
+get_lyrics <- function(lyr_link){
+	lyr_link %>%
+		read_html() %>%
+		html_nodes(css = ".mxm-lyrics__content") %>%
+		html_text() %>%
+		collapse(sep = "\n") %>%
+		return()
+}
+```
+
+```{r}
+SLS_lyrics$Link[2] %>%
+	get_lyrics()
+```
+
+```{r}
+SLS_lyrics %<>%
+	mutate(Lyrics = map_chr(Link, get_lyrics))
+```
+

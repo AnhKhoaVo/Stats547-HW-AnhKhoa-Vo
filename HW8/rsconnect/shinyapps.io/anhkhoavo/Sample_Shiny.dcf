@@ -5,8 +5,8 @@ account: anhkhoavo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 236340
-bundleId: 1087400
+bundleId: 1088645
 url: https://anhkhoavo.shinyapps.io/Sample_Shiny/
-when: 1511249818.1476
+when: 1511294545.31541
 asMultiple: FALSE
 asStatic: FALSE
