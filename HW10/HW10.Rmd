@@ -1,0 +1,108 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(glue)
+library(reshape2)
+```
+
+```{r}
+library(rvest)
+library(xml2)
+```
+
+First, I would like to see the cost of Living in Texas so I downloaded the data from the website. I then briefly overviewed the cost of living in texas across different domains: 
+```{r}
+Texas <- read_html("https://www.bestplaces.net/cost_of_living/city/texas/austin")
+cost <- html_nodes(Texas, "#mainContent_dgCostOfLiving td")
+html_text(cost)
+```
+
+Next, I turned the html file into a data frame for exploration:
+```{r}
+Cost <- html_nodes(Texas, css = "table")
+Cost_of_living <- html_table(Cost, header = TRUE, fill = TRUE)[[2]]
+Cost_of_living
+```
+
+For ease of exploration and graphing, I decided to turn it into long format:
+```{r}
+Cost_long <- melt(Cost_of_living, id.vars=c("COST OF LIVING"))
+colnames(Cost_long)[1] <- "Living"
+colnames(Cost_long)[3] <- "Cost"
+Cost_long
+
+```
+
+Looking at the data frame, I realized the cost values of United States are consistently the same across different domains so instead of graphing values of United States, I put them as a reference line.
+```{r}
+Cost_long %>%
+	filter(variable != "United States") %>%
+	ggplot(aes(x=Living, y=Cost, fill = Living)) +
+    geom_bar(stat = "identity") + 
+	  geom_hline(yintercept = 100, colour = "red", linetype = "dashed", size = 1) + 
+	  annotate("text",x = 1.5, y=105,size=3,label=c("United States (Reference Line)")) + 
+	  theme_bw() + 
+	  xlab("Living Indices") + ylab("Cost") +
+	  ggtitle("Cost of Living in Austin, Texas compared to United States")
+```
+
+Next, I explored the Education aspect of Texas, then turned them into dataframe: 
+```{r}
+Texas_education <- read_html("https://www.bestplaces.net/education/city/texas/austin")
+Education <- html_table(Texas_education, header = TRUE, fil = TRUE)[[2]]
+Education
+```
+
+Looking at the dataframe, I realized that the education measurement units are not the same. The first 3 aspects are related to cost of Education, whereas the last 3 aspects are related to ratio between students and staff/teacher. 
+
+Thus, I divided the dataframe into 2 parts. The first part explored the cost of education:
+```{r}
+Education_Cost <- c("Expend. per Student", "Educ. Expend. per Student", "Instr. Expend. per Student")
+Cost_Education <- Education[Education$EDUCATION %in% Education_Cost, ] %>%
+	melt(id.vars = c("EDUCATION")) %>%
+	mutate(value = value %>%
+				 	str_replace_all("\\D","") %>%
+				 	as.numeric())
+Cost_Education
+```
+
+graph of cost of education:
+```{r}
+ggplot(data=Cost_Education, aes(x=EDUCATION, y=value, fill=variable)) + 
+    geom_bar(colour="black", stat="identity",
+             position=position_dodge(),
+             size=.3) +                        
+    scale_fill_hue(name="States") +      
+    xlab("Education Indices") + ylab("COST") +
+    ggtitle("Education Cost In Austin, Texas Compared to United States") +   
+    theme_bw()
+```
+
+The second part explored the ratio between students and staff/teachers:
+```{r}
+Education_Ratio <- c("Pupil/Teacher Ratio", "Students per Librarian", "Students per Counselor")
+
+Ratio_Education <- Education[Education$EDUCATION %in% Education_Ratio, ] %>%
+	melt(id.vars = c("EDUCATION")) %>%
+  mutate(value = value %>%
+  			 as.numeric())
+Ratio_Education
+```
+
+graph of ratio education:
+```{r}
+ggplot(data=Ratio_Education, aes(x=EDUCATION, y=value, fill=variable)) + 
+    geom_bar(colour="black", stat="identity",
+             position=position_dodge(),
+             size=.3) +                        
+    scale_fill_hue(name="States") +      
+    xlab("Education Indices") + ylab("Ratio") +
+    ggtitle("Education Ratio In Austin, Texas Compared to United States") +   
+    theme_bw()
+```
+
