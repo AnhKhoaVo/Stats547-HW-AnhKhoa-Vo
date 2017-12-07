@@ -1,6 +1,10 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
 ---
 
 ```{r}
@@ -27,6 +31,7 @@ Next, I turned the html file into a data frame for exploration:
 Cost <- html_nodes(Texas, css = "table")
 Cost_of_living <- html_table(Cost, header = TRUE, fill = TRUE)[[2]]
 Cost_of_living
+write.csv(Cost_of_living, file = "Cost_of_living.csv")
 ```
 
 For ease of exploration and graphing, I decided to turn it into long format:
@@ -56,6 +61,7 @@ Next, I explored the Education aspect of Texas, then turned them into dataframe:
 Texas_education <- read_html("https://www.bestplaces.net/education/city/texas/austin")
 Education <- html_table(Texas_education, header = TRUE, fil = TRUE)[[2]]
 Education
+write.csv(Education, file = "Education.csv")
 ```
 
 Looking at the dataframe, I realized that the education measurement units are not the same. The first 3 aspects are related to cost of Education, whereas the last 3 aspects are related to ratio between students and staff/teacher. 
