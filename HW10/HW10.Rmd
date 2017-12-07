@@ -19,6 +19,8 @@ library(rvest)
 library(xml2)
 ```
 
+# Cost of Living in Texas
+
 First, I would like to see the cost of Living in Texas so I downloaded the data from the website. I then briefly overviewed the cost of living in texas across different domains: 
 ```{r}
 Texas <- read_html("https://www.bestplaces.net/cost_of_living/city/texas/austin")
@@ -55,6 +57,9 @@ Cost_long %>%
 	  xlab("Living Indices") + ylab("Cost") +
 	  ggtitle("Cost of Living in Austin, Texas compared to United States")
 ```
+
+
+# Education in Texas
 
 Next, I explored the Education aspect of Texas, then turned them into dataframe: 
 ```{r}
